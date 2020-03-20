@@ -17,9 +17,9 @@ public class Doctor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", unique = true)
     private long id;
-    @Column(name = "FIRSTNAME")
+    @Column(name = "FIRST_NAME")
     private String firstname;
-    @Column(name = "lastname")
+    @Column(name = "last_name")
     private String lastname;
     @OneToMany(
             targetEntity = Visit.class,

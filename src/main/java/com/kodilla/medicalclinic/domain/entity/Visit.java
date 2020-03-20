@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 @NoArgsConstructor
 @Getter
@@ -19,6 +20,8 @@ public class Visit {
     private long id;
     @Column(name = "DATE")
     private LocalDate date;
+    @Column(name = "TIME")
+    private LocalTime time;
     @Column(name = "ICD10")
     private String icd10;
     @ManyToOne
