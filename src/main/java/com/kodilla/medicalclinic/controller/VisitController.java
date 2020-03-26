@@ -35,11 +35,11 @@ public class VisitController {
 
     }
 
-    // - Pobranie procedury ze słownika ICD-10
-    @RequestMapping(method = RequestMethod.GET, value = "/icd10")
-    public List<Icd10> getIcd10() {
-        return new ArrayList<>();
-    }
+//    // - Pobranie procedury ze słownika ICD-10
+//    @RequestMapping(method = RequestMethod.GET, value = "/icd10")
+//    public List<Icd10> getIcd10() {
+//        return new ArrayList<>();
+//    }
 
     // - Pobranie wszystkich wizyt(lista ostatnich 20 wizyt) (pobranie wizyt które sie maja odbyć)
     @RequestMapping(method = RequestMethod.GET, value = "/visits")
