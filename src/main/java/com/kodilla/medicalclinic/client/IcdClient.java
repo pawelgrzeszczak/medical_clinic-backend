@@ -4,6 +4,7 @@ import com.kodilla.medicalclinic.domain.dto.Icd10Dto;
 import com.kodilla.medicalclinic.domain.dto.IcdDtoResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -28,7 +29,7 @@ public class IcdClient {
     private String icd10Codes;
 
 
-    public List<IcdDtoResponse> getIcd10Codes() {
+    public List<Icd10Dto> getIcd10Codes() {
 
         URI url = UriComponentsBuilder.fromHttpUrl(icd10ApiEndpoint + "/getcodes")
                 .queryParam("q", icd10Codes)
@@ -36,11 +37,14 @@ public class IcdClient {
                 .queryParam("token", icd10Token).build().encode().toUri();
 
 //        IcdDtoResponse[] icd10Response = restTemplate.getForObject(url, IcdDtoResponse[].class);
-        IcdDtoResponse icd10Response = restTemplate.getForObject(url, IcdDtoResponse.class);
+//        IcdDtoResponse icd10Response = restTemplate.getForObject(url, IcdDtoResponse.class);
+        ResponseEntity<IcdDtoResponse> icd10Response = restTemplate.getForEntity(url, IcdDtoResponse.class);
+        IcdDtoResponse codes = icd10Response.getBody();
 
 
-        if (icd10Response != null) {
-            return Arrays.asList(icd10Response);
+        if (codes != null) {
+//            return Arrays.asList(icd10Response);
+            return codes.getICD10();
         }
         return new ArrayList<>();
 
