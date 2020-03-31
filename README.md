@@ -1,0 +1,1 @@
+https://github.com/pawelgrzeszczak/medical_clinic-frontend
