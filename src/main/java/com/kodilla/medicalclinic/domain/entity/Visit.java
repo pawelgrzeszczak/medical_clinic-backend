@@ -6,8 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,9 +20,7 @@ public class Visit {
     @Column(name = "ID", unique = true)
     private long id;
     @Column(name = "DATE")
-    private LocalDate date;
-    @Column(name = "TIME")
-    private LocalTime time;
+    private LocalDateTime date;
     @Column(name = "ICD10")
     private String icd10;
     @ManyToOne
@@ -32,4 +29,9 @@ public class Visit {
     @ManyToOne
     @JoinColumn(name = "USER_ID")
     private User user;
+
+    public Visit(long id, LocalDateTime date) {
+        this.id = id;
+        this.date = date;
+    }
 }

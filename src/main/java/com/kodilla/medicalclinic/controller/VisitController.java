@@ -1,17 +1,13 @@
 package com.kodilla.medicalclinic.controller;
 
 import com.kodilla.medicalclinic.domain.DateOfVisit;
-import com.kodilla.medicalclinic.domain.Icd10;
 import com.kodilla.medicalclinic.domain.dto.VisitDto;
-import com.kodilla.medicalclinic.domain.entity.Doctor;
-import com.kodilla.medicalclinic.domain.entity.User;
 import com.kodilla.medicalclinic.mapper.VisitMapper;
 import com.kodilla.medicalclinic.service.DbVisitService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,9 +20,19 @@ public class VisitController {
     private VisitMapper visitMapper;
 
     // - Rezerwacja wizyty
-    @RequestMapping(method = RequestMethod.POST, value = "/visit/callendar") // consumes = APPLICATION_JSON_VALUE ?
+    @RequestMapping(method = RequestMethod.POST, value = "/visit/callendar", produces= MediaType.APPLICATION_JSON_VALUE) // consumes = APPLICATION_JSON_VALUE ?
     public void createVisit(@RequestBody VisitDto visitDto) {
         dbVisitService.saveVisit(visitMapper.mapToVisit(visitDto));
+
+        List<DateOfVisit> reservedDatesOfVisits = visitMapper.mapToVisitDataDtoList(dbVisitService.getAllVisits());
+        System.out.println("Zarezerwowane terminy: ");
+        int n = 0;
+        for (DateOfVisit reservedVisits: reservedDatesOfVisits) {
+            n++;
+            System.out.print(n +": ");
+            System.out.println(reservedVisits);
+        }
+
     }
 
     // - Rezerwacja wizyty - dodanie wizyty do kalendarza google
