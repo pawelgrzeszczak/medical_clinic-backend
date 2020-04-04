@@ -8,8 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/v1")
@@ -86,8 +89,50 @@ public class VisitController {
     }
 
     // - Pobranie wolnych terminów (dostępne co 30 min)
-    @RequestMapping(method = RequestMethod.GET, value = "/visits/dates")
+    @RequestMapping(method = RequestMethod.GET, value = "/visits/dates", produces= MediaType.APPLICATION_JSON_VALUE)
     public List<DateOfVisit> getDatesOfVisits() {
-        return new ArrayList<>();
+
+        List<DateOfVisit> reservedDatesOfVisits = visitMapper.mapToVisitDataDtoList(dbVisitService.getAllVisits());
+        System.out.println("Zarezerwowane terminy: ");
+        for (DateOfVisit reservedVisits: reservedDatesOfVisits) {
+            System.out.println(reservedVisits);
+        }
+
+        System.out.println("Terminy wygenerowane all wolne");
+        for (DateOfVisit visit: getGenerateAvailableAppointment()) {
+            System.out.println(visit);
+        }
+
+        List<DateOfVisit> generatedAvailableAppointments = getGenerateAvailableAppointment();
+
+        List<DateOfVisit> asd =
+                generatedAvailableAppointments.stream()
+                        .filter(ra -> !reservedDatesOfVisits.contains(ra))
+                        .collect(Collectors.toList());
+
+        System.out.println("Terminy wolne porownane z zajetymi w bazie: ");
+        for (DateOfVisit ap: asd) {
+            System.out.println(ap);
+        }
+
+        return asd;
+    }
+
+    public List<DateOfVisit> getGenerateAvailableAppointment() {
+        List<DateOfVisit> dateOfVisits = new ArrayList<>();
+
+        int hour = 8;
+        int minute = 0;
+        while(hour < 16) {
+            LocalDateTime localDateTime = LocalDate.now().plusDays(1).atTime(hour, minute);
+            dateOfVisits.add(new DateOfVisit(localDateTime));
+
+            minute+=30;
+            if(minute == 60) {
+                minute = 0;
+                hour++;
+            }
+        }
+        return dateOfVisits;
     }
 }

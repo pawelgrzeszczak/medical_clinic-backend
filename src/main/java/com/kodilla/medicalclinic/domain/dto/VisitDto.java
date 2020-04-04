@@ -21,4 +21,11 @@ public class VisitDto {
 //    private String icd10;
 //    private Doctor doctor;
 //    private User user;
+
+//    public VisitDto(LocalDateTime date, String icd10, Doctor doctor, User user) {
+//        this.date = date;
+//        this.icd10 = icd10;
+//        this.doctor = doctor;
+//        this.user = user;
+//    }
 }
